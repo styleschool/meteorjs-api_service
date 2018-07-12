@@ -119,6 +119,6 @@ deploy_job:
       --env "ROOT_URL=$(printenv ROOT_URL)"
       --env "TOKEN=$(printenv TOKEN_KEY)"
       --name "$(printenv CONTAINER_NAME)"
-      --publish 4000:3010
+      --publish 4010:3000
       --restart=always
       "$(printenv GITLAB_REPOSITORY)"
