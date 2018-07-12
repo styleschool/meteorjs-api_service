@@ -1,0 +1,124 @@
+stages:
+  - test
+  - build
+  - docker
+  - deploy
+
+test_job:
+  stage: test
+  image: valentineus/meteor:latest
+
+  tags:
+    - docker
+
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    paths:
+      - node_modules
+
+  variables:
+    NODE_ENV: "development"
+    TEST_CLIENT: "0"
+    TEST_SERVER: "1"
+
+  before_script:
+    - apt-get update
+    - apt-get --no-install-recommends --no-install-suggests --yes install procps
+    - git submodule sync --recursive
+    - git submodule update --init --recursive
+    - meteor npm install
+    - meteor reset
+
+  script:
+    - meteor test --driver-package=meteortesting:mocha --once
+
+build_job:
+  stage: build
+  image: valentineus/meteor:build-1.6
+
+  only:
+    - master
+
+  tags:
+    - docker
+
+  artifacts:
+    paths:
+      - build
+
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    paths:
+      - node_modules
+
+  variables:
+    METEOR_ALLOW_SUPERUSER: "true"
+    TOOL_NODE_FLAGS: "--max_old_space_size=4096"
+
+    before_script:
+    - apt-get update
+    - apt-get --no-install-recommends --no-install-suggests --yes install procps
+    - git submodule sync --recursive
+    - git submodule update --init --recursive
+    - meteor npm install
+    - meteor reset
+
+  script:
+    - meteor build --directory ./build-source --architecture "os.linux.x86_64"
+    - mv ./build-source/bundle ./build
+    - cd ./build/programs/server
+    - meteor npm install
+
+docker_job:
+  stage: docker
+  image: docker:stable
+
+  services:
+    - docker:dind
+
+  only:
+    - master
+
+  tags:
+    - docker
+
+  artifacts:
+    paths:
+      - build
+
+  before_script:
+    - docker login
+      --username "$(printenv GITLAB_USERNAME)"
+      --password "$(printenv GITLAB_PASSWORD)"
+      registry.styleschool.ru
+
+  script:
+    - docker build --tag "$(printenv GITLAB_REPOSITORY)" ./
+    - docker push "$(printenv GITLAB_REPOSITORY)"
+
+deploy_job:
+  stage: deploy
+
+  only:
+    - master
+
+  tags:
+    - hetzner
+
+  before_script:
+    - docker rm --force "$(printenv CONTAINER_NAME)"
+    - docker login
+      --username "$(printenv GITLAB_USERNAME)"
+      --password "$(printenv GITLAB_PASSWORD)"
+      registry.styleschool.ru
+
+  script:
+    - docker pull "$(printenv GITLAB_REPOSITORY)"
+    - docker run --detach
+      --env "MONGO_URL=$(printenv MONGO_URL)"
+      --env "ROOT_URL=$(printenv ROOT_URL)"
+      --env "TOKEN=$(printenv TOKEN_KEY)"
+      --name "$(printenv CONTAINER_NAME)"
+      --publish 4000:3010
+      --restart=always
+      "$(printenv GITLAB_REPOSITORY)"
