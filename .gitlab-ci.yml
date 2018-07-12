@@ -6,7 +6,7 @@ stages:
 
 test_job:
   stage: test
-  image: valentineus/meteor:latest
+  image: valentineus/meteor:build-1.6
 
   tags:
     - docker
@@ -55,7 +55,7 @@ build_job:
     METEOR_ALLOW_SUPERUSER: "true"
     TOOL_NODE_FLAGS: "--max_old_space_size=4096"
 
-    before_script:
+  before_script:
     - apt-get update
     - apt-get --no-install-recommends --no-install-suggests --yes install procps
     - git submodule sync --recursive
