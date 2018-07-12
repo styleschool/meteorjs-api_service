@@ -8,7 +8,6 @@ process.env.TOKEN = faker.random.uuid();
 describe('Authentication Server:', () => {
     describe('Authorization:', () => {
         const user = {
-            username: faker.random.uuid(),
             password: faker.internet.password(),
             email: faker.internet.email(),
         };
@@ -19,7 +18,7 @@ describe('Authentication Server:', () => {
 
         it('Invalid request', (done) => {
             Meteor.call('authorization', {
-                username: user.username,
+                email: user.email,
                 password: user.password,
                 token: faker.random.uuid(),
             }, (error, result) => {
@@ -30,7 +29,7 @@ describe('Authentication Server:', () => {
 
         it('Invalid user', (done) => {
             Meteor.call('authorization', {
-                username: faker.random.uuid(),
+                email: faker.internet.email(),
                 password: faker.internet.password(),
                 token: faker.random.uuid(),
             }, (error, result) => {
@@ -41,7 +40,7 @@ describe('Authentication Server:', () => {
 
         it('Valid user', (done) => {
             Meteor.call('authorization', {
-                username: user.username,
+                email: user.email,
                 password: user.password,
                 token: process.env.TOKEN,
             }, (error, result) => {
