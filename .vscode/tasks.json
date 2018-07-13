@@ -9,9 +9,10 @@
         "script": "test",
         "options": {
             "env": {
+                "DEBUG": "api",
                 "TEST_CLIENT": "0",
                 "TEST_SERVER": "1",
-                "TEST_WATCH": "1"
+                "TEST_WATCH": "1",
             }
         },
         "presentation": {

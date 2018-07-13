@@ -6,6 +6,7 @@ COPY ["build", "/usr/src/app"]
 WORKDIR "/usr/src/app"
 
 # Environment Variables
+ENV DEBUG="api"
 ENV PORT="3000"
 
 # Running the application

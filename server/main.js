@@ -1,3 +1,4 @@
+import logger from './debug';
 import { Accounts } from 'meteor/accounts-base';
 import { Meteor } from 'meteor/meteor';
 
@@ -11,6 +12,8 @@ Meteor.methods({
      * @description Верифицирует пользователя по электронной почте и паролю.
      */
     'authorization': function (options) {
+        logger('A packet is received %O', options);
+
         /* Checks the token */
         if (!('token' in options) || !(process.env.TOKEN === options.token)) {
             return false;
@@ -21,11 +24,19 @@ Meteor.methods({
             return false;
         }
 
+        logger('Search for a user');
         const user = Accounts.findUserByEmail(options.email);
+        logger('Result: %O', user);
 
         /* Verifies the user */
-        if (user && Accounts._checkPassword(user, options.password)) {
-            return true;
+        if (user) {
+            logger('Password validation');
+            const check = Accounts._checkPassword(user, options.password);
+            logger('Result: %O', check);
+
+            if (check) {
+                return true;
+            }
         }
 
         return false;
