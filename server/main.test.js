@@ -30,8 +30,19 @@ describe('Authentication Server:', () => {
         it('Invalid user', (done) => {
             Meteor.call('authorization', {
                 email: faker.internet.email(),
+                password: user.password,
+                token: process.env.TOKEN,
+            }, (error, result) => {
+                assert.isFalse(result);
+                done();
+            });
+        });
+
+        it('Invalid password', (done) => {
+            Meteor.call('authorization', {
+                email: user.email,
                 password: faker.internet.password(),
-                token: faker.random.uuid(),
+                token: process.env.TOKEN,
             }, (error, result) => {
                 assert.isFalse(result);
                 done();

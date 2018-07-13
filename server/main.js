@@ -12,7 +12,7 @@ Meteor.methods({
      * @description Верифицирует пользователя по электронной почте и паролю.
      */
     'authorization': function (options) {
-        logger('A packet is received %O', options);
+        logger('Gets the package: %O', options);
 
         /* Checks the token */
         if (!('token' in options) || !(process.env.TOKEN === options.token)) {
@@ -24,17 +24,15 @@ Meteor.methods({
             return false;
         }
 
-        logger('Search for a user');
         const user = Accounts.findUserByEmail(options.email);
-        logger('Result: %O', user);
+        logger('Looks user: %O', user);
 
         /* Verifies the user */
         if (user) {
-            logger('Password validation');
             const check = Accounts._checkPassword(user, options.password);
-            logger('Result: %O', check);
+            logger('Verify password: %O', check);
 
-            if (check) {
+            if (!('error' in check) && check.userId) {
                 return true;
             }
         }
