@@ -1,4 +1,4 @@
-import logger from './debug';
+import debug from 'debug';
 import { Accounts } from 'meteor/accounts-base';
 import { Meteor } from 'meteor/meteor';
 
@@ -12,6 +12,7 @@ Meteor.methods({
      * @description Верифицирует пользователя по электронной почте и паролю.
      */
     'authorization': function (options) {
+        const logger = debug('authorization');
         logger('Gets the package: %O', options);
 
         /* Checks the token */
