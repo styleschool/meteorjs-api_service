@@ -1,18 +1,31 @@
 {
-    "name": "authentication-service",
-    "private": true,
-    "scripts": {
-        "clean": "meteor reset",
-        "start": "meteor run",
-        "test": "meteor test --driver-package=meteortesting:mocha"
-    },
-    "dependencies": {
-        "@babel/runtime": "^7.0.0-beta.51",
-        "debug": "^3.1.0",
-        "meteor-node-stubs": "^0.4.1"
-    },
-    "devDependencies": {
-        "chai": "^4.1.2",
-        "faker": "^4.1.0"
-    }
+  "name": "authentication-service",
+  "private": true,
+  "scripts": {
+    "clean": "meteor reset",
+    "lint": "eslint .",
+    "start": "meteor run",
+    "test": "meteor test --driver-package=meteortesting:mocha"
+  },
+  "eslintConfig": {
+    "extends": "@meteorjs/eslint-config-meteor"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.0.0-beta.51",
+    "debug": "^3.1.0",
+    "meteor-node-stubs": "^0.4.1"
+  },
+  "devDependencies": {
+    "@meteorjs/eslint-config-meteor": "^1.0.5",
+    "babel-eslint": "^8.2.6",
+    "chai": "^4.1.2",
+    "eslint": "^5.1.0",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-import-resolver-meteor": "^0.4.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-meteor": "^5.0.0",
+    "eslint-plugin-react": "^7.10.0",
+    "faker": "^4.1.0"
+  }
 }
