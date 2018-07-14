@@ -62,4 +62,42 @@ describe('Authentication Server:', () => {
       });
     });
   });
+
+  describe('findUserByEmail', () => {
+    const email = faker.internet.email();
+
+    before(() => {
+      Accounts.createUser({ email });
+    });
+
+    it('Invalid request', (done) => {
+      Meteor.call('findUserByEmail', {
+        email: faker.internet.email(),
+        token: faker.random.uuid(),
+      }, (error, result) => {
+        assert.isFalse(result);
+        done();
+      });
+    });
+
+    it('Invalid user', (done) => {
+      Meteor.call('findUserByEmail', {
+        token: process.env.TOKEN,
+        email: faker.internet.email(),
+      }, (error, result) => {
+        assert.isFalse(result);
+        done();
+      });
+    });
+
+    it('Valid user', (done) => {
+      Meteor.call('findUserByEmail', {
+        token: process.env.TOKEN,
+        email,
+      }, (error, result) => {
+        assert.isObject(result);
+        done();
+      });
+    });
+  });
 });
