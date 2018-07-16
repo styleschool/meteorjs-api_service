@@ -6,7 +6,7 @@ COPY ["build", "/usr/src/app"]
 WORKDIR "/usr/src/app"
 
 # Environment Variables
-ENV DEBUG="*"
+ENV DEBUG="API:*"
 ENV NODE_ENV="production"
 ENV PORT="3000"
 
