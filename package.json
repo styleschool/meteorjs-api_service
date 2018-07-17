@@ -1,5 +1,5 @@
 {
-  "name": "authentication-service",
+  "name": "api-service",
   "private": true,
   "scripts": {
     "clean": "meteor reset",
