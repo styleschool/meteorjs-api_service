@@ -1,4 +1,4 @@
-FROM node:8-alpine
+FROM node:8-slim
 LABEL MAINTAINER="Valentin Popov <info@valentineus.link>"
 
 # Copy the application to the Docker image
