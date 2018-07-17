@@ -18,6 +18,8 @@ test_job:
 
   variables:
     NODE_ENV: "development"
+    PORT: "3000"
+    ROOT_URL: "http://localhost:3000"
     TEST_CLIENT: "0"
     TEST_SERVER: "1"
 
