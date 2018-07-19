@@ -7,6 +7,16 @@ import { Meteor } from 'meteor/meteor';
 import { assert } from 'chai';
 
 describe('Методы:', () => {
+  describe('Тестовые методы:', () => {
+    it('True', (done) => {
+      Meteor.call('test', (error, result) => {
+        assert.isBoolean(result.answer);
+        assert.isTrue(result.answer);
+        done();
+      });
+    });
+  });
+
   describe('Authorization:', () => {
     const user = {
       email: faker.internet.email(),
@@ -69,16 +79,6 @@ describe('Методы:', () => {
       Meteor.call('get_user_by_email', { email }, (error, result) => {
         assert.isNotEmpty(result);
         assert.isObject(result);
-        done();
-      });
-    });
-  });
-
-  describe('Test:', () => {
-    it('True', (done) => {
-      Meteor.call('test', (error, result) => {
-        assert.isBoolean(result);
-        assert.isTrue(result);
         done();
       });
     });

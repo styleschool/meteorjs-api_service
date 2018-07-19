@@ -15,15 +15,9 @@ function handler(request, response) {
 
   try {
     const options = Object.assign({}, request.query, request.body);
-
-    Meteor.call(request.params.method, options, (error, data) => {
-      if (error) {
-        throw new Meteor.Error(error);
-      }
-
-      JsonRoutes.sendResult(response, { code: 200, data });
-      logger('Результат: %o', data);
-    });
+    const data = Meteor.call(request.params.method, options);
+    logger('Результат: %o', data);
+    JsonRoutes.sendResult(response, { code: 200, data });
   } catch (error) {
     JsonRoutes.sendResult(response, { code: 400, data: false });
     ERROR(error);

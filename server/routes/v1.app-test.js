@@ -12,17 +12,17 @@ describe('Верификация запросов:', () => {
   it('Корректный POST', (done) => {
     HTTP.post(url, {
       data: { token: process.env.TOKEN },
-    }, (error, result) => {
-      assert.isBoolean(result.data);
-      assert.isTrue(result.data);
+    }, (error, response) => {
+      assert.isBoolean(response.data.answer);
+      assert.isTrue(response.data.answer);
       done();
     });
   });
 
   it('Некорректный POST', (done) => {
-    HTTP.post(url, {}, (error, result) => {
-      assert.isBoolean(result.data);
-      assert.isFalse(result.data);
+    HTTP.post(url, {}, (error, response) => {
+      assert.isBoolean(response.data);
+      assert.isFalse(response.data);
       done();
     });
   });
@@ -30,17 +30,27 @@ describe('Верификация запросов:', () => {
   it('Корректный GET', (done) => {
     HTTP.get(url, {
       params: { token: process.env.TOKEN },
-    }, (error, result) => {
-      assert.isBoolean(result.data);
-      assert.isTrue(result.data);
+    }, (error, response) => {
+      assert.isBoolean(response.data.answer);
+      assert.isTrue(response.data.answer);
       done();
     });
   });
 
   it('Некорректный GET', (done) => {
-    HTTP.get(url, {}, (error, result) => {
-      assert.isBoolean(result.data);
-      assert.isFalse(result.data);
+    HTTP.get(url, {}, (error, response) => {
+      assert.isBoolean(response.data);
+      assert.isFalse(response.data);
+      done();
+    });
+  });
+
+  it('Несуществующий метод', (done) => {
+    const method = faker.random.uuid();
+    const endpoints = Meteor.absoluteUrl(`/v1/${method}`);
+    HTTP.get(endpoints, {}, (error, response) => {
+      assert.isBoolean(response.data);
+      assert.isFalse(response.data);
       done();
     });
   });

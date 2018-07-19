@@ -74,6 +74,6 @@ Meteor.methods({
   test() {
     const logger = debug('API:test');
     logger('Вызов тестового метода');
-    return true;
+    return { answer: true };
   },
 });
