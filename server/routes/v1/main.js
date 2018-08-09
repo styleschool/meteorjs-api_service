@@ -10,13 +10,22 @@ import { Meteor } from 'meteor/meteor';
  * @param {IncomingMessage} request
  * @param {ServerResponse}  response
  */
-function handler(request, response) {
-  const logger = debug('API:handler');
+function processRequest(request, response) {
+  const logger = debug('API:routes');
+  const token = process.env.TOKEN;
 
   try {
     const options = Object.assign({}, request.query, request.body);
-    const data = Meteor.call(request.params.method, options);
+
+    /* Проверка токена */
+    if (!('token' in options) && (options.token !== token)) {
+      throw new Meteor.Error('Token is not valid');
+    }
+
+    /* Вызов метода */
+    const data = Meteor.call(`v1:${request.params.method}`, options);
     logger('Результат: %o', data);
+
     JsonRoutes.sendResult(response, { code: 200, data });
   } catch (error) {
     JsonRoutes.sendResult(response, { code: 400, data: false });
@@ -27,9 +36,9 @@ function handler(request, response) {
 /**
  * @description Обработчик GET запросов.
  */
-JsonRoutes.add('GET', '/v1/:method', handler);
+JsonRoutes.add('GET', '/v1/:method', processRequest);
 
 /**
  * @description Обработчик POST запросов.
  */
-JsonRoutes.add('POST', '/v1/:method', handler);
+JsonRoutes.add('POST', '/v1/:method', processRequest);

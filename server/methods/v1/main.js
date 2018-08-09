@@ -13,7 +13,7 @@ Meteor.methods({
    * @param   {String}  options.password  Пароль пользователя
    * @returns {Boolean}                   Результат проверки
    */
-  'authorization' (options = {}) {
+  'v1:authorization' (options = {}) {
     const logger = debug('API:authorization');
 
     try {
@@ -49,7 +49,7 @@ Meteor.methods({
    * @param   {Object}  options.email Электронная почта
    * @returns {Object}                Результат поиска
    */
-  'get_user_by_email' (options = {}) {
+  'v1:get_user_by_email' (options = {}) {
     const logger = debug('API:get_user_by_email');
 
     try {
@@ -71,7 +71,7 @@ Meteor.methods({
    *
    * @returns {Boolean}
    */
-  test() {
+  'v1:test'() {
     const logger = debug('API:test');
     logger('Вызов тестового метода');
     return { answer: true };

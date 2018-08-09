@@ -6,10 +6,10 @@ import { assert } from 'chai';
 
 process.env.TOKEN = faker.random.uuid();
 
-describe('Верификация запросов:', () => {
+describe('Check routes:', () => {
   const url = Meteor.absoluteUrl('/v1/test');
 
-  it('Корректный POST', (done) => {
+  it('Correct POST', (done) => {
     HTTP.post(url, {
       data: { token: process.env.TOKEN },
     }, (error, response) => {
@@ -19,7 +19,7 @@ describe('Верификация запросов:', () => {
     });
   });
 
-  it('Некорректный POST', (done) => {
+  it('Incorrect POST', (done) => {
     HTTP.post(url, {}, (error, response) => {
       assert.isBoolean(response.data);
       assert.isFalse(response.data);
@@ -27,7 +27,7 @@ describe('Верификация запросов:', () => {
     });
   });
 
-  it('Корректный GET', (done) => {
+  it('Correct GET', (done) => {
     HTTP.get(url, {
       params: { token: process.env.TOKEN },
     }, (error, response) => {
@@ -37,7 +37,7 @@ describe('Верификация запросов:', () => {
     });
   });
 
-  it('Некорректный GET', (done) => {
+  it('Incorrect GET', (done) => {
     HTTP.get(url, {}, (error, response) => {
       assert.isBoolean(response.data);
       assert.isFalse(response.data);
@@ -45,7 +45,7 @@ describe('Верификация запросов:', () => {
     });
   });
 
-  it('Несуществующий метод', (done) => {
+  it('Non-existent method', (done) => {
     const method = faker.random.uuid();
     const endpoints = Meteor.absoluteUrl(`/v1/${method}`);
     HTTP.get(endpoints, {}, (error, response) => {
