@@ -6,7 +6,7 @@ stages:
 
 test_job:
   stage: test
-  image: valentineus/meteor:build-1.6
+  image: valentineus/meteor:build
 
   tags:
     - docker
@@ -22,12 +22,10 @@ test_job:
     TEST_SERVER: "1"
 
   before_script:
-    - apt-get update
-    - apt-get --no-install-recommends --no-install-suggests --yes install procps
+    - apt-get update && apt-get --yes install procps
     - git submodule sync --recursive
     - git submodule update --init --recursive
-    - meteor npm install
-    - meteor reset
+    - meteor reset && meteor npm install
 
   script:
     - meteor npm run lint
@@ -35,7 +33,7 @@ test_job:
 
 build_job:
   stage: build
-  image: valentineus/meteor:build-1.6
+  image: valentineus/meteor:build
 
   only:
     - master
@@ -52,17 +50,11 @@ build_job:
     paths:
       - node_modules
 
-  variables:
-    METEOR_ALLOW_SUPERUSER: "true"
-    TOOL_NODE_FLAGS: "--max_old_space_size=4096"
-
   before_script:
-    - apt-get update
-    - apt-get --no-install-recommends --no-install-suggests --yes install procps
+    - apt-get update && apt-get --yes install procps
     - git submodule sync --recursive
     - git submodule update --init --recursive
-    - meteor npm install
-    - meteor reset
+    - meteor reset && meteor npm install
 
   script:
     - meteor build --directory ./build-source --architecture "os.linux.x86_64"

@@ -6,7 +6,7 @@ import { assert } from 'chai';
 
 process.env.TOKEN = faker.random.uuid();
 
-describe('Check routes:', () => {
+describe('Check V1 routes:', () => {
   const url = Meteor.absoluteUrl('/v1/test');
 
   it('Correct POST', (done) => {

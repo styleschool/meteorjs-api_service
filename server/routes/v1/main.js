@@ -1,44 +1,40 @@
-import ERROR from '/server/error';
 import debug from 'debug';
 
-import { JsonRoutes } from 'meteor/simple:json-routes';
 import { Meteor } from 'meteor/meteor';
+import { Picker } from 'meteor/meteorhacks:picker';
 
-/**
- * @description Обработчик входящего пакета.
- *
- * @param {IncomingMessage} request
- * @param {ServerResponse}  response
- */
-function processRequest(request, response) {
-  const logger = debug('API:routes');
-  const token = process.env.TOKEN;
+Picker.route('/v1/:method', (parameters, request, response) => {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
 
   try {
-    const options = Object.assign({}, request.query, request.body);
+    const logger = debug('API:v1:routes');
+    const token = process.env.TOKEN || '';
 
-    /* Проверка токена */
-    if (!('token' in options) && (options.token !== token)) {
+    if (!('method' in parameters)) {
+      throw new Meteor.Error('Method is not correct');
+    }
+
+    const options = Object.assign({}, parameters.query, request.body);
+    logger('Получен пакет данных: %o', options);
+
+    if (!('token' in options) || (options.token !== token)) {
       throw new Meteor.Error('Token is not valid');
     }
 
-    /* Вызов метода */
-    const data = Meteor.call(`v1:${request.params.method}`, options);
-    logger('Результат: %o', data);
+    const result = Meteor.call(`v1:${parameters.method}`, options);
+    logger('Результат: %o', result);
 
-    JsonRoutes.sendResult(response, { code: 200, data });
+    response.writeHead(200, headers);
+    response.write(JSON.stringify(result));
+    response.end();
   } catch (error) {
-    JsonRoutes.sendResult(response, { code: 400, data: false });
-    ERROR(error);
+    const logger = debug('API:v1:error');
+    logger(error.error);
+
+    response.writeHead(400, headers);
+    response.write('false');
+    response.end();
   }
-}
-
-/**
- * @description Обработчик GET запросов.
- */
-JsonRoutes.add('GET', '/v1/:method', processRequest);
-
-/**
- * @description Обработчик POST запросов.
- */
-JsonRoutes.add('POST', '/v1/:method', processRequest);
+});

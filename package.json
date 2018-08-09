@@ -8,10 +8,17 @@
     "test": "meteor test --driver-package=meteortesting:mocha --full-app --raw-logs"
   },
   "eslintConfig": {
-    "extends": "@meteorjs/eslint-config-meteor"
+    "plugins": [
+      "security"
+    ],
+    "extends": [
+      "@meteorjs/eslint-config-meteor",
+      "plugin:security/recommended"
+    ]
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.51",
+    "body-parser": "^1.18.3",
     "debug": "^3.1.0",
     "meteor-node-stubs": "^0.4.1"
   },
@@ -26,6 +33,7 @@
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-meteor": "^5.0.0",
     "eslint-plugin-react": "^7.10.0",
+    "eslint-plugin-security": "^1.4.0",
     "faker": "^4.1.0"
   }
 }

@@ -33,5 +33,20 @@
       "reveal": "always"
     },
     "problemMatcher": []
+  }, {
+    "label": "Meteor: Run",
+    "group": "test",
+    "type": "npm",
+    "script": "start",
+    "options": {
+      "env": {}
+    },
+    "presentation": {
+      "echo": true,
+      "focus": false,
+      "panel": "new",
+      "reveal": "always"
+    },
+    "problemMatcher": []
   }]
 }
