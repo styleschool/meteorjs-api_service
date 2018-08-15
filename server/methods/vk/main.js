@@ -33,17 +33,14 @@ Meteor.methods({
     const logger = debug('API:vk:lead_forms_new');
     logger('Получены данные: %o', options);
 
-    const bt24 = new Bitrix24({
-      domain: process.env.B24_DOMAIN || '',
-      token: process.env.B24_TOKEN || '',
-      userid: process.env.B24_USERID || 0,
-    });
-
     const param = {
-      sourceDescription: `https://vk.com/ads?act=office&union_id=${options.ad_id}`,
       title: `Лид со страницы VK: ${options.form_name}`,
       web: `https://vk.com/id${options.user_id}`,
     };
+
+    if ('ad_id' in options) {
+      param.sourceDescription = `https://vk.com/ads?act=office&union_id=${options.ad_id}`;
+    }
 
     options.answers.forEach((item) => {
       if (item.key === 'first_name') {
@@ -61,6 +58,12 @@ Meteor.methods({
       if (item.key === 'phone_number') {
         param.phone = item.answer;
       }
+    });
+
+    const bt24 = new Bitrix24({
+      domain: process.env.B24_DOMAIN || '',
+      token: process.env.B24_TOKEN || '',
+      userid: process.env.B24_USERID || 0,
     });
 
     logger('Сформирован пакет: %o', param);

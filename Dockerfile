@@ -2,7 +2,7 @@ FROM node:8-slim
 LABEL MAINTAINER="Valentin Popov <info@valentineus.link>"
 
 # Copy the application to the Docker image
-COPY ["build", "/usr/src/app"]
+COPY ["build/bundle", "/usr/src/app"]
 WORKDIR "/usr/src/app"
 
 # Environment Variables

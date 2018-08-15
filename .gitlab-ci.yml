@@ -23,9 +23,9 @@ test_job:
     TEST_SERVER: "1"
 
   before_script:
-    - apt-get update && apt-get --yes install procps
     - git submodule sync --recursive
     - git submodule update --init --recursive
+    - apt-get update && apt-get --yes install procps
     - meteor reset && meteor npm install
 
   script:
@@ -53,18 +53,18 @@ build_job:
 
   variables:
     GIT_SUBMODULE_STRATEGY: "recursive"
+    NODE_ENV: "development"
 
   before_script:
-    - apt-get update && apt-get --yes install procps
     - git submodule sync --recursive
     - git submodule update --init --recursive
+    - apt-get update && apt-get --yes install procps
     - meteor reset && meteor npm install
 
   script:
-    - meteor build --directory ./build-source --architecture "os.linux.x86_64"
-    - mv ./build-source/bundle ./build
-    - cd ./build/programs/server
-    - meteor npm install
+    - meteor npm run lint && meteor npm run test -- --once
+    - meteor build --architecture "os.linux.x86_64" --directory "./build" --server-only
+    - cd "./build/bundle/programs/server" && meteor npm install
 
 docker_job:
   stage: docker
@@ -84,13 +84,10 @@ docker_job:
       - build
 
   before_script:
-    - docker login
-      --username "$(printenv GITLAB_USERNAME)"
-      --password "$(printenv GITLAB_PASSWORD)"
-      registry.styleschool.ru
+    - docker login --username "$(printenv GITLAB_USERNAME)" --password "$(printenv GITLAB_PASSWORD)" registry.styleschool.ru
 
   script:
-    - docker build --tag "$(printenv GITLAB_REPOSITORY)" ./
+    - docker build --tag "$(printenv GITLAB_REPOSITORY)" "./"
     - docker push "$(printenv GITLAB_REPOSITORY)"
 
 deploy_job:
@@ -104,14 +101,11 @@ deploy_job:
 
   before_script:
     - docker rm --force "$(printenv CONTAINER_NAME)"
-    - docker login
-      --username "$(printenv GITLAB_USERNAME)"
-      --password "$(printenv GITLAB_PASSWORD)"
-      registry.styleschool.ru
+    - docker login --username "$(printenv GITLAB_USERNAME)" --password "$(printenv GITLAB_PASSWORD)" registry.styleschool.ru
 
   script:
     - docker pull "$(printenv GITLAB_REPOSITORY)"
-    - docker run --detach
+    - docker run --detach --restart=always
       --env "B24_DOMAIN=$(printenv B24_DOMAIN)"
       --env "B24_TOKEN=$(printenv B24_TOKEN)"
       --env "B24_USERID=$(printenv B24_USERID)"
@@ -122,5 +116,4 @@ deploy_job:
       --env "VK_TOKEN=$(printenv VK_TOKEN)"
       --name "$(printenv CONTAINER_NAME)"
       --publish "$(printenv PORT):3000"
-      --restart=always
       "$(printenv GITLAB_REPOSITORY)"

@@ -11,8 +11,8 @@ reactive-var@1.0.11             # Reactive variable for tracker
 static-html                     # Define static page content in .html files
 tracker@1.2.0                   # Meteor's client-side reactive programming library
 
-accounts-base@1.4.2                   # Meteor's user account system
-accounts-password@1.5.1               # Meteor's user account system
+accounts-base@1.4.2             # Meteor's user account system
+accounts-password@1.5.1         # Meteor's user account system
 ecmascript@0.11.1               # Enable ECMAScript2015+ syntax in app code
 es5-shim@4.8.0                  # ECMAScript 5 compatibility for older browsers
 meteorhacks:picker              # Picker is an easy to use server side router for Meteor

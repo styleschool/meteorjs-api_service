@@ -2,9 +2,8 @@
   "name": "api-service",
   "private": true,
   "scripts": {
-    "clean": "meteor reset",
-    "lint": "eslint .",
     "start": "meteor run",
+    "lint": "node_modules/eslint/bin/eslint.js .",
     "test": "meteor test --driver-package=meteortesting:mocha --full-app --raw-logs"
   },
   "eslintConfig": {
