@@ -1,3 +1,3 @@
 [submodule "packages/bitrix24-adapter"]
 	path = packages/bitrix24-adapter
-	url = https://git.styleschool.ru/meteorjs/bitrix24-adapter.git
+	url = ../../meteorjs/bitrix24-adapter.git

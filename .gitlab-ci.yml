@@ -17,6 +17,7 @@ test_job:
       - node_modules
 
   variables:
+    GIT_SUBMODULE_STRATEGY: "recursive"
     NODE_ENV: "development"
     TEST_CLIENT: "0"
     TEST_SERVER: "1"
@@ -50,7 +51,10 @@ build_job:
     paths:
       - node_modules
 
-  before_script:
+  variables:
+    GIT_SUBMODULE_STRATEGY: "recursive"
+
+      before_script:
     - apt-get update && apt-get --yes install procps
     - git submodule sync --recursive
     - git submodule update --init --recursive
