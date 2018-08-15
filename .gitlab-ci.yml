@@ -54,7 +54,7 @@ build_job:
   variables:
     GIT_SUBMODULE_STRATEGY: "recursive"
 
-      before_script:
+  before_script:
     - apt-get update && apt-get --yes install procps
     - git submodule sync --recursive
     - git submodule update --init --recursive
