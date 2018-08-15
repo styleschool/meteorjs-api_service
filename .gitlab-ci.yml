@@ -112,9 +112,14 @@ deploy_job:
   script:
     - docker pull "$(printenv GITLAB_REPOSITORY)"
     - docker run --detach
+      --env "B24_DOMAIN=$(printenv B24_DOMAIN)"
+      --env "B24_TOKEN=$(printenv B24_TOKEN)"
+      --env "B24_USERID=$(printenv B24_USERID)"
       --env "MONGO_URL=$(printenv MONGO_URL)"
       --env "ROOT_URL=$(printenv API_URL)"
-      --env "TOKEN=$(printenv TOKEN_KEY)"
+      --env "TOKEN=$(printenv TOKEN)"
+      --env "VK_CONFKEY=$(printenv VK_CONFKEY)"
+      --env "VK_TOKEN=$(printenv VK_TOKEN)"
       --name "$(printenv CONTAINER_NAME)"
       --publish "$(printenv PORT):3000"
       --restart=always
