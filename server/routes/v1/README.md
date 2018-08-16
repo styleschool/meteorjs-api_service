@@ -31,6 +31,12 @@ https://example.domain/v1/method?token=key&param=value
 
 Используемые параметры требуется проверять перед использованием.
 
+## Методы
+
+Документацию используемых методов, смотрите на
+[соответствующей странице](/server/methods/v1/README.md)
+документации.
+
 ## Расширение методов
 
 При получении запроса, происходит поиск Meteor метода `v1:метод`.
@@ -45,6 +51,7 @@ https://example.domain/v1/method?token=key&param=value
 Пример шаблона:
 
 ```javascript
+import debug from 'debug';
 import { Meteor } from 'meteor/meteor';
 
 Meteor.methods({

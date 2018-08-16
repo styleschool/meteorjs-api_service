@@ -90,6 +90,11 @@ API службы легко расширяется, используйте эт�
 [Подробности в документации](https://github.com/visionmedia/debug#readme)
 отладочного пакета.
 
+## Используемые плагины
+
+* [styleschool:bitrix24-adapter](https://git.styleschool.ru/meteorjs/bitrix24-adapter)
+Адаптер к системе Битрикс24
+
 ## Лицензия
 
 <img width="256px" alt="MIT License" src="https://raw.githubusercontent.com/valentineus/valentineus.github.io/master/assets/images/7d05cad0-d553-42c7-be1f-7007926ba720.png" />
