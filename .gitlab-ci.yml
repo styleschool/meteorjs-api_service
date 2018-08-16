@@ -111,7 +111,7 @@ deploy_job:
       --env "B24_USERID=$(printenv B24_USERID)"
       --env "MONGO_URL=$(printenv MONGO_URL)"
       --env "ROOT_URL=$(printenv API_URL)"
-      --env "TOKEN=$(printenv TOKEN)"
+      --env "V1_TOKEN=$(printenv V1_TOKEN)"
       --env "VK_CONFKEY=$(printenv VK_CONFKEY)"
       --env "VK_TOKEN=$(printenv VK_TOKEN)"
       --name "$(printenv CONTAINER_NAME)"

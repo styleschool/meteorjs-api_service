@@ -10,7 +10,7 @@ Picker.route('/v1/:method', (parameters, request, response) => {
 
   try {
     const logger = debug('API:v1:routes');
-    const token = process.env.TOKEN || '';
+    const token = process.env.V1_TOKEN || '';
 
     if (!('method' in parameters)) {
       throw new Meteor.Error('Method is not correct');

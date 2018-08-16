@@ -6,7 +6,7 @@ import { Meteor } from 'meteor/meteor';
 import { assert } from 'chai';
 
 describe('Check VK routes:', () => {
-  const url = Meteor.absoluteUrl('/api.vk/callback');
+  const url = Meteor.absoluteUrl('/api.vk');
   process.env.VK_TOKEN = faker.random.uuid();
 
   it('Incorrect POST', (done) => {

@@ -3,7 +3,7 @@ import debug from 'debug';
 import { Meteor } from 'meteor/meteor';
 import { Picker } from 'meteor/meteorhacks:picker';
 
-Picker.route('/api.vk/callback', (parameters, request, response) => {
+Picker.route('/api.vk', (parameters, request, response) => {
   const headers = {
     'Content-Type': 'text/plain',
   };
@@ -15,12 +15,16 @@ Picker.route('/api.vk/callback', (parameters, request, response) => {
     const options = Object.assign({}, parameters.query, request.body);
     logger('Получен пакет данных: %o', options);
 
+    if (!('secret' in options) || (options.secret !== token)) {
+      throw new Meteor.Error('Token is not valid');
+    }
+
     if (!('type' in options)) {
       throw new Meteor.Error('Method is not correct');
     }
 
-    if (!('secret' in options) || (options.secret !== token)) {
-      throw new Meteor.Error('Token is not valid');
+    if (!('object' in options)) {
+      options.object = {};
     }
 
     const result = Meteor.call(`vk:${options.type}`, options.object);
