@@ -4,14 +4,14 @@ import { HTTP } from 'meteor/http';
 import { Meteor } from 'meteor/meteor';
 import { assert } from 'chai';
 
-process.env.TOKEN = faker.random.uuid();
+process.env.V1_TOKEN = faker.random.uuid();
 
 describe('Check V1 routes:', () => {
   const url = Meteor.absoluteUrl('/v1/test');
 
   it('Correct POST', (done) => {
     HTTP.post(url, {
-      data: { token: process.env.TOKEN },
+      data: { token: process.env.V1_TOKEN },
     }, (error, response) => {
       assert.isBoolean(response.data.answer);
       assert.isTrue(response.data.answer);
@@ -29,7 +29,7 @@ describe('Check V1 routes:', () => {
 
   it('Correct GET', (done) => {
     HTTP.get(url, {
-      params: { token: process.env.TOKEN },
+      params: { token: process.env.V1_TOKEN },
     }, (error, response) => {
       assert.isBoolean(response.data.answer);
       assert.isTrue(response.data.answer);

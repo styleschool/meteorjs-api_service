@@ -7,7 +7,7 @@
 
 ## lead_forms_new( options ) ⇒ `String`
 
-| Param               | Type      | Description                 |
+| Параметр            | Тип       | Описание                    |
 | ------------------- | --------- | --------------------------- |
 | `options`           | `Object`  | Входные параметры           |
 | `options.ad_id`     | `Number`  | ID рекламного объявления    |
